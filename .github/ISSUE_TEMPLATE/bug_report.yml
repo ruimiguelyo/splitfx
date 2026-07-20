@@ -1,0 +1,92 @@
+name: Bug report
+description: Report reproducible behaviour that differs from the documented prototype.
+title: '[Bug]: '
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve SplitFX. This is a demo-data prototype, not a payment product. Do not include credentials, personal financial information, client material, or other sensitive data.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues for the same behaviour.
+          required: true
+        - label: I removed private, confidential, and security-sensitive data from this report.
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the user-visible problem in one or two clear sentences.
+      placeholder: When I ..., SplitFX ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Begin from a fresh demo reset where possible.
+      placeholder: |
+        1. Open ...
+        2. Select ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+
+  - type: dropdown
+    id: financial-impact
+    attributes:
+      label: Does this affect an amount, currency, balance, quote state, or settlement direction?
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Not sure'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: accessibility-impact
+    attributes:
+      label: Does this affect keyboard or assistive-technology use?
+      options:
+        - 'Yes'
+        - 'No'
+        - 'Not sure'
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, browser and version, viewport, and assistive technology if relevant.
+      placeholder: Windows 11, Chrome 000, 1440 × 900
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Add a minimal screenshot, console message, or notes if useful. Redact sensitive data.

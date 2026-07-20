@@ -1,0 +1,15 @@
+{
+  "name": "Rui Sá — Frontend Portfolio",
+  "short_name": "Rui Sá",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f3f1ec",
+  "theme_color": "#111319",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

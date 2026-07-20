@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+cypress/screenshots/
+cypress/videos/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+
+# Private application preparation notes — intentionally kept off GitHub.
+docs/APPLICATION_COPY.md
+docs/PUBLISH_CHECKLIST.md

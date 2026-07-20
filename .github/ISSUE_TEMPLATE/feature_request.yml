@@ -1,0 +1,62 @@
+name: Product or feature proposal
+description: Propose a user outcome or an improvement to the prototype.
+title: '[Proposal]: '
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Start with the problem and desired outcome. SplitFX deliberately excludes live rates, accounts, and payments; proposals that cross those boundaries should identify the new trust, privacy, security, and compliance requirements.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and the product brief for this proposal.
+          required: true
+        - label: This issue contains no credentials, personal financial information, or confidential material.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Who has the problem, in what situation, and why does it matter?
+      placeholder: When ..., a group member needs to ..., because ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe what should become possible without prescribing the implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Acceptance example
+      placeholder: |
+        Given ...
+        When ...
+        Then ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Trust and accessibility considerations
+      description: Consider money/rounding, quote freshness, privacy, security, keyboard use, assistive technology, and honest product copy where relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or smaller experiments
+      description: What is the smallest way to validate the need before expanding scope?

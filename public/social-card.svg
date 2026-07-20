@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Rui Sá frontend portfolio and SplitFX</title>
+  <desc id="desc">An editorial portfolio cover showing the phrase Complex logic, clear interface beside a SplitFX settlement card.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f8f7f2"/>
+      <stop offset="1" stop-color="#eeede6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="70%" r="65%">
+      <stop stop-color="#586cff" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#111319" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="26" stdDeviation="24" flood-color="#111319" flood-opacity=".24"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#111319" stroke-opacity=".035"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#paper)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="990" cy="110" r="210" fill="#c7ff63" fill-opacity=".13"/>
+  <g transform="translate(54 48)">
+    <rect width="48" height="48" rx="14" fill="#111319"/>
+    <text x="24" y="30" fill="#c7ff63" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="800" text-anchor="middle">RS</text>
+    <text x="62" y="30" fill="#111319" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700">Rui Sá · Frontend engineer</text>
+  </g>
+  <g transform="translate(55 160)">
+    <rect y="-30" width="302" height="29" rx="14.5" fill="#ffffff" stroke="#111319" stroke-opacity=".1"/>
+    <circle cx="16" cy="-15" r="4" fill="#29a870"/>
+    <text x="29" y="-11" fill="#5c616b" font-family="monospace" font-size="10">AVAILABLE FOR 2027 FRONTEND ROLES</text>
+    <text x="0" y="72" fill="#111319" font-family="Arial,Helvetica,sans-serif" font-size="76" font-weight="500" letter-spacing="-5">Complex logic.</text>
+    <text x="0" y="151" fill="#111319" font-family="Georgia,serif" font-size="78" font-style="italic" letter-spacing="-4">Clear interface.</text>
+    <rect x="-3" y="139" width="416" height="18" fill="#c7ff63"/>
+    <text x="0" y="217" fill="#5f646e" font-family="Arial,Helvetica,sans-serif" font-size="17">Product thinking · React · TypeScript · Tested domain logic</text>
+    <rect y="257" width="188" height="50" rx="25" fill="#3348e8"/>
+    <text x="94" y="288" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Explore SplitFX  →</text>
+  </g>
+  <g transform="translate(610 126) rotate(2 260 210)" filter="url(#shadow)">
+    <rect width="526" height="420" rx="30" fill="#111319"/>
+    <rect width="526" height="420" rx="30" fill="url(#glow)"/>
+    <path d="M0 57H526" stroke="#ffffff" stroke-opacity=".1"/>
+    <circle cx="26" cy="28" r="4" fill="#ffad99"/>
+    <circle cx="39" cy="28" r="4" fill="#ffd66b"/>
+    <circle cx="52" cy="28" r="4" fill="#77d7c8"/>
+    <text x="263" y="32" fill="#ffffff" fill-opacity=".5" font-family="monospace" font-size="10" text-anchor="middle">SplitFX · product prototype</text>
+    <circle cx="463" cy="28" r="4" fill="#c7ff63"/>
+    <text x="474" y="32" fill="#c7ff63" font-family="monospace" font-size="9">DEMO</text>
+    <text x="42" y="103" fill="#ffffff" fill-opacity=".48" font-family="monospace" font-size="10" letter-spacing="2">LISBON DESIGN WEEKEND</text>
+    <text x="42" y="157" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="39" font-weight="500" letter-spacing="-2">Everyone leaves even.</text>
+    <path d="M42 185H484" stroke="#ffffff" stroke-opacity=".12"/>
+    <text x="42" y="220" fill="#ffffff" fill-opacity=".45" font-family="Arial,Helvetica,sans-serif" font-size="11">Group spend</text>
+    <text x="42" y="252" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700">€1,077.46</text>
+    <path d="M263 205V262" stroke="#ffffff" stroke-opacity=".12"/>
+    <text x="292" y="220" fill="#ffffff" fill-opacity=".45" font-family="Arial,Helvetica,sans-serif" font-size="11">Settled in</text>
+    <text x="292" y="252" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="25" font-weight="700">3 transfers</text>
+    <rect x="42" y="287" width="442" height="82" rx="18" fill="#ffffff" fill-opacity=".07" stroke="#ffffff" stroke-opacity=".1"/>
+    <circle cx="79" cy="328" r="21" fill="#ffad99"/>
+    <text x="79" y="332" fill="#111319" font-family="monospace" font-size="9" font-weight="800" text-anchor="middle">SO</text>
+    <path d="M105 328H139" stroke="#ffffff" stroke-opacity=".3"/>
+    <path d="m134 323 6 5-6 5" fill="none" stroke="#ffffff" stroke-opacity=".5"/>
+    <circle cx="165" cy="328" r="21" fill="#c7ff63"/>
+    <text x="165" y="332" fill="#111319" font-family="monospace" font-size="9" font-weight="800" text-anchor="middle">RS</text>
+    <text x="201" y="319" fill="#ffffff" fill-opacity=".42" font-family="Arial,Helvetica,sans-serif" font-size="9">SUGGESTED NEXT</text>
+    <text x="201" y="340" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Sam pays Rui</text>
+    <text x="455" y="334" fill="#ffffff" font-family="monospace" font-size="12" font-weight="700" text-anchor="end">€211.21</text>
+  </g>
+  <text x="55" y="594" fill="#111319" fill-opacity=".52" font-family="monospace" font-size="10">RUI SÁ / FRONTEND ENGINEERING / DEMO DATA ONLY</text>
+</svg>
