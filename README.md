@@ -1,74 +1,54 @@
 # SplitFX
 
-**A cross-currency group expense and settlement prototype built to make money movement explainable.**
+**A small side project for splitting group expenses when people pay in different currencies.**
 
-![Rui Sá frontend portfolio and SplitFX product preview](public/social-card.svg)
+![SplitFX preview](public/social-card.svg)
 
-[Open the live prototype](https://ruimiguelyo.github.io/splitfx/) · [Browse the source](https://github.com/ruimiguelyo/splitfx) · [CI status](https://github.com/ruimiguelyo/splitfx/actions/workflows/ci.yml)
+[Try the live demo](https://ruimiguelyo.github.io/splitfx/) · [View the code](https://github.com/ruimiguelyo/splitfx) · [CI status](https://github.com/ruimiguelyo/splitfx/actions/workflows/ci.yml)
 
-SplitFX is a frontend product-engineering portfolio project by [Rui Sá](https://github.com/ruimiguelyo). It explores a deceptively difficult problem: when a group spends in different currencies, how can the interface show who owes whom without hiding quote freshness, rounding, or the assumptions behind the result?
+I started SplitFX because splitting a dinner or a weekend trip is easy until people pay in EUR, GBP, and USD at the same time. At that point, rounding, exchange rates, and stale quotes can make a simple result difficult to trust.
 
-This is a client-side prototype with demo data. It does **not** connect to a bank, move real money, authenticate users, or fetch live foreign-exchange rates.
+I wanted to build a small app where those details are visible instead of hidden. The project gave me a practical way to work on money calculations, derived state, testing, accessibility, and the awkward states that usually get ignored in a quick demo.
 
-## Why this project exists
+SplitFX is a personal side project. It is not connected to my professional SAP work, and it is not a real financial product. It uses fictional people, fictional expenses, and fixed demo exchange rates.
 
-Most expense-splitting demos stop at arithmetic. SplitFX treats the calculation and the interface as one trust problem:
+## What it does
 
-- Money is represented as integer minor units rather than binary floating-point totals.
-- Currency conversion rounds once, at the target-currency boundary.
-- Quote freshness is visible through explicit live, loading, expired, offline, and error states.
-- Settlement output is deterministic and described accurately as using fewer transfers, not as a globally minimal solution.
-- Balances and settlement suggestions are derived from source data instead of stored as competing state.
+- Starts with a fictional group trip and expenses in EUR, GBP, and USD.
+- Lets you add an expense, choose who paid, and select who took part.
+- Converts everything to the group's EUR base currency.
+- Recalculates each person's balance after every change.
+- Suggests a short, deterministic list of repayments.
+- Shows loading, fresh, expired, offline, and error states for the demo FX quote.
+- Resets the app back to the original demo data.
 
-The result is intentionally small enough to review, but deep enough to discuss product decisions, state modelling, numerical correctness, accessibility, and testing.
+The quickest way to understand it is to [open the demo](https://ruimiguelyo.github.io/splitfx/), add an expense, and then switch between the quote states.
 
-## Review it in five minutes
+## Running it locally
 
-1. Start the app and inspect the preloaded multi-currency group.
-2. Add an expense and observe the derived balances and settlement plan update.
-3. Explore the quote-status controls, including expired and offline behaviour.
-4. Read the focused domain logic in [`src/domain`](src/domain) and its tests.
-5. Use the [recruiter walkthrough](docs/RECRUITER_WALKTHROUGH.md) for a guided tour.
-
-## Run locally
-
-### Requirements
-
-- Node.js 22 or newer
-- npm
+You need Node.js 22 or newer and npm.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000`.
+Then open `http://127.0.0.1:3000`.
 
-To run the complete local quality gate:
+To run the main checks:
 
 ```bash
 npm run verify
 npm run test:e2e
 ```
 
-`npm run verify` checks formatting, linting, strict TypeScript, coverage-enforced tests, and the production build. End-to-end tests are separate so that the fast feedback loop remains useful during development.
+`npm run verify` checks formatting, linting, TypeScript, test coverage, and the production build. The Cypress end-to-end tests run separately because they start the app in a browser.
 
-## Product behaviour
+## A few choices I made
 
-SplitFX starts with a fictional Lisbon weekend and entirely fictional participants and expenses. The prototype supports a deliberately bounded flow:
+### Store money as minor units
 
-- Review expenses recorded in EUR, GBP, and USD.
-- Add an expense with a payer, category, and selected participants.
-- Recalculate per-person balances in the group's EUR base currency.
-- Produce a compact, deterministic settlement suggestion.
-- Surface the state and validity window of the demo FX quote.
-- Reset the experience back to known demo data.
-
-For the product assumptions, user stories, exclusions, and possible next steps, see the [product brief](docs/PRODUCT_BRIEF.md).
-
-## Engineering highlights
-
-### Money and rounding
+I avoid using floating-point numbers for money. For example, EUR 12.34 is stored as `1234` cents:
 
 ```ts
 interface Money {
@@ -77,88 +57,89 @@ interface Money {
 }
 ```
 
-Amounts such as €12.34 enter the domain as `1234` minor units. An expense is converted to the base currency before it is divided, with any indivisible remainder assigned deterministically. This makes the conservation rule inspectable: allocated shares add back to the converted expense total.
+An expense is converted to EUR before it is divided. If the amount cannot be split evenly, the remaining cent is assigned in a consistent order. That way, the individual shares always add back to the original converted total.
 
-### State and derivation
+### Calculate balances instead of storing them twice
 
-```mermaid
-flowchart LR
-  UI["React interface"] --> A["Typed user actions"]
-  A --> S["Redux Toolkit slice"]
-  S --> D["Demo expenses, participants, and quote state"]
-  D --> X["Memoized selectors"]
-  X --> M["Pure money and settlement functions"]
-  M --> V["Balances and settlement view"]
-  V --> UI
-```
+Redux stores the participants, expenses, and quote state. Balances and repayment suggestions are calculated from that source data with selectors and pure domain functions.
 
-The store owns inputs and lifecycle state. Selectors call pure domain functions to calculate totals, balances, and settlements. That separation keeps React components focused on interaction and presentation, while the numerical rules remain easy to test without a browser.
+I chose this because storing both the inputs and the calculated result makes it too easy for them to disagree after an update.
 
-### Quote lifecycle
+### Make the fake FX quote honest
 
-The quote refresh is a controlled simulation over fixed demo rates. It models the UI states a production integration would need, but it is not presented as market data. The explicit validity timestamp allows the interface to distinguish a usable quote from an expired one rather than silently continuing with stale values.
+There is no live exchange-rate provider. The refresh button is a controlled simulation using fixed demo rates.
 
-### Quality strategy
+I still modelled loading, expiry, offline, and error states because those are the situations a real integration would have to handle. The interface always shows whether the quote is usable instead of quietly continuing with stale data.
 
-- **Jest** exercises money, settlement, state, and component behaviour.
-- **Testing Library** validates behaviour through user-visible semantics.
-- **Cypress** covers the critical browser journey.
-- **TypeScript strict mode** includes unchecked-index and exact-optional-property checks.
-- **ESLint** includes React Hooks and JSX accessibility rules.
-- **CI** runs the quality gates for pushes and pull requests.
+### Keep the settlement result predictable
 
-The detailed test matrix and manual accessibility checks are documented in [Testing and accessibility](docs/TESTING_AND_ACCESSIBILITY.md).
+The repayment algorithm is greedy and deterministic. It tries to reduce the number of transfers, but I do not claim that it always finds the mathematical minimum.
 
-## Technology
+That trade-off felt more useful for this project than hiding a complicated optimisation behind a result that is difficult to explain.
 
-| Concern              | Choice                      | Reason                                                                  |
-| -------------------- | --------------------------- | ----------------------------------------------------------------------- |
-| Interface            | React                       | Component-driven interaction and clear UI composition                   |
-| Language             | TypeScript                  | Explicit domain contracts and strict compile-time checks                |
-| State                | Redux Toolkit + React Redux | Predictable transitions and memoized derived data                       |
-| Build                | Webpack                     | Direct control over the production and development pipeline             |
-| Unit/component tests | Jest + Testing Library      | Fast behavioural feedback around domain and UI boundaries               |
-| Browser tests        | Cypress                     | Confidence in the main journey as a user experiences it                 |
-| Styling              | CSS                         | A small, inspectable visual system without runtime styling dependencies |
+## Testing
 
-## Repository map
+I added tests around the parts where a small mistake would be easy to miss:
+
+- Money conversion, division, and rounding.
+- Balance and settlement calculations.
+- Redux state transitions and selectors.
+- Adding an expense through the interface.
+- Dialog focus and keyboard behaviour.
+- The main browser journey with Cypress.
+
+The project uses Jest, Testing Library, Cypress, strict TypeScript, ESLint, and GitHub Actions. More detail is available in [Testing and accessibility](docs/TESTING_AND_ACCESSIBILITY.md).
+
+## Tech stack
+
+- React and TypeScript
+- Redux Toolkit and React Redux
+- Webpack
+- Jest and Testing Library
+- Cypress
+- CSS
+- GitHub Actions and GitHub Pages
+
+## Project structure
 
 ```text
 src/
 ├── app/                 Store and typed Redux hooks
-├── components/          Reusable interface components
-├── content/             Candidate profile content
+├── components/          Interface components
+├── content/             Text used by the surrounding portfolio page
 ├── domain/              Money conversion and settlement rules
-├── features/splitfx/    Feature state, selectors, demo data, and UI
+├── features/splitfx/    SplitFX state, selectors, demo data, and UI
 └── test/                Shared test setup
-cypress/                 End-to-end browser scenarios
-docs/                    Product, architecture, quality, and review notes
-.github/                 CI, Pages deployment, and contribution templates
+cypress/                 End-to-end browser tests
+docs/                    Product, architecture, and testing notes
+.github/                 CI and GitHub Pages workflows
 ```
 
-## Deliberate limits
+## What it does not do
 
-- The application is a portfolio prototype, not a financial product.
-- Rates and refresh latency are simulated; there is no FX provider.
-- There is no backend, persistence, authentication, authorisation, or payment rail.
-- Supported currencies are limited to EUR, GBP, and USD, each with two fraction digits in this prototype.
-- The greedy settlement routine is deterministic and compact, but no global-minimum claim is made.
-- Automated accessibility checks reduce regressions but do not replace manual keyboard and assistive-technology testing.
+- It does not connect to a bank or move money.
+- It does not fetch live exchange rates.
+- It has no backend, accounts, authentication, or persistence.
+- It only supports EUR, GBP, and USD, with two decimal places.
+- Its settlement algorithm is not guaranteed to find the global minimum number of transfers.
+- Automated accessibility checks do not replace testing with real assistive technology.
 
-These boundaries are part of the design: they keep the review focused on frontend product judgement and make future production requirements visible rather than implied.
+These limits are intentional. I preferred a smaller project whose calculations and assumptions I could explain clearly.
 
-## Documentation
+## Extra notes
 
 - [Product brief](docs/PRODUCT_BRIEF.md)
-- [Architecture and decision records](docs/architecture/README.md)
+- [Architecture decisions](docs/architecture/README.md)
 - [Testing and accessibility](docs/TESTING_AND_ACCESSIBILITY.md)
-- [Recruiter walkthrough](docs/RECRUITER_WALKTHROUGH.md)
+- [Short project walkthrough](docs/RECRUITER_WALKTHROUGH.md)
 
-## About Rui
+## About me
 
-Rui Sá is a frontend developer in Setúbal, Portugal. He worked at Deloitte from October 2021 to March 2026 and is completing a BSc in Computer Engineering at the Polytechnic Institute of Setúbal, expected in 2027. He previously completed a CTeSP in Software Engineering (2021–2023).
+I'm Rui, a Computer Engineering student based in Setúbal, Portugal. My professional background is in SAP, ABAP development, and SAP functional analysis. Outside that work, I enjoy building side projects and learning more about AI engineering, data, and automation.
 
-- [GitHub](https://github.com/ruimiguelyo)
+SplitFX is one of those side projects. I built it to practise working through a problem from the calculation rules to the final interface, and to get better at explaining the decisions behind the code.
+
+- [My GitHub profile](https://github.com/ruimiguelyo)
 - [LinkedIn](https://www.linkedin.com/in/rui-s%C3%A1-1243162ab/)
 
 ## Licence
